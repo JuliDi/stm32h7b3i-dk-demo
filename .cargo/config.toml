@@ -1,0 +1,27 @@
+[target.'cfg(all(target_arch = "arm", target_os = "none"))']
+# replace STM32F429ZITx with your chip as listed in `probe-rs chip list`
+runner = [
+  "probe-rs",
+  "run",
+  "--chip",
+  "STM32H7B3LIHxQ",
+  # Custom log format until this PR is included in probe-rs release https://github.com/probe-rs/probe-rs/pull/2524
+  "--log-format",
+  "{t} {L} {s}\n└─ {m} @ {F}:{l}",
+]
+
+# Sometimes you find these set in build.rs
+rustflags = [
+  "-C",
+  "link-arg=--nmagic",
+  "-C",
+  "link-arg=-Tlink.x",
+  "-C",
+  "link-arg=-Tdefmt.x",
+]
+
+[build]
+target = "thumbv7em-none-eabi"
+
+[env]
+DEFMT_LOG = "trace"
